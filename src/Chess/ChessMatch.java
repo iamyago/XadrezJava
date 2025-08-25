@@ -1,12 +1,16 @@
 package Chess;
 
+import Chess.pieces.King;
+import Chess.pieces.Rook;
 import boardgame.Board;
+import boardgame.Position;
 
 public class ChessMatch {
     private Board board;
 
     public ChessMatch() {
         this.board = new Board(8,8);
+        inicialsetup();
     }
 
     // reconhece somente a camada ChessPiece não PIECE.
@@ -19,5 +23,10 @@ public class ChessMatch {
             }
         }
         return pieces;
+    }
+    private void inicialsetup (){
+        board.PlacePiece(new Rook(board, Color.WHITE), new Position(2,1));
+        board.PlacePiece(new King(board, Color.BLACK), new Position(0,4));
+        board.PlacePiece(new King(board, Color.WHITE), new Position(7,4));
     }
 }
