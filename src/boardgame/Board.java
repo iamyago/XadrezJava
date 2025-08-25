@@ -5,8 +5,10 @@ public class Board {
     private int columns;
     private Piece[][] pieces;
 
-
     public Board(int rows, int columns) {
+        if (rows < 1 || columns < 1) {
+            throw new BoardException("Rows and columns must be greater than 1 ");
+        }
         this.rows = rows;
         this.columns = columns;
         this.pieces = new Piece[rows][columns];
@@ -16,26 +18,42 @@ public class Board {
         return rows;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
     public int getColumns() {
         return columns;
     }
 
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
     public Piece piece(int row, int column) {
+        if (!positionExistis(row, column)) {
+            throw new BoardException("Position does not exist");
+        }
         return pieces[row][column];
     }
     public Piece pieces(Position pos) {
+        if (!positionExists(pos)) {
+            throw new BoardException("Position does not exist");
+        }
         return piece(pos.getRow(), pos.getColumn());
     }
     public void PlacePiece(Piece piece, Position pos) {
+        if (thereIsAPiece(pos)){
+            throw new BoardException("There is already a piece on this position");
+        }
         pieces[pos.getRow()][pos.getColumn()] = piece;
         piece.position = pos;
+    }
+
+    private boolean positionExistis (int row, int column){
+        return row >= 0 && row < rows && column >= 0 && column < columns;
+    }
+
+    public boolean positionExists (Position pos) {
+        return positionExistis (pos.getRow(), pos.getColumn());
+    }
+
+    public boolean thereIsAPiece (Position pos){
+        if (!positionExists(pos)) {
+            throw new BoardException("Position does not exist");
+        }
+        return pieces(pos) != null;
     }
 }
