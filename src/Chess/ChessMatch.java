@@ -3,6 +3,7 @@ package Chess;
 import Chess.pieces.King;
 import Chess.pieces.Rook;
 import boardgame.Board;
+import boardgame.Piece;
 import boardgame.Position;
 
 public class ChessMatch {
@@ -23,6 +24,26 @@ public class ChessMatch {
             }
         }
         return pieces;
+    }
+
+    public ChessPiece performChessMove (ChessPosition sourcePosition, ChessPosition targetPosition){
+        Position source = sourcePosition.toPosition();
+        Position target = targetPosition.toPosition();
+        validadeSourcePosition(source);
+        Piece capturedPiece = makeMove(source, target);
+        return (ChessPiece) capturedPiece;
+    }
+    private Piece makeMove(Position source, Position target){
+        Piece p = board.RemovePiece(source);
+        Piece capturedPiece = board.RemovePiece(target);
+        board.PlacePiece(p, target);
+        return capturedPiece;
+    }
+
+    private void validadeSourcePosition(Position position) {
+        if(!board.thereIsAPiece(position)){
+            throw new ChessException("There is no piece on source position ");
+        }
     }
 
     private void placeNewPiece(char column, int row, ChessPiece piece) {
